@@ -44,7 +44,7 @@ DF-detection-log-parser/
 ├── input_logs/        # Place your log files here
 ├── output_csv/        # Generated CSV files will be saved here
 └── DF-detection-log-parser.py
-
+```
 ---
 
 ## ⚙️ Requirements
@@ -52,7 +52,7 @@ DF-detection-log-parser/
 - Install dependencies:
 ```bash
 pip install pandas
-
+```
 ## ▶️ Usage Instructions
 1. Prepare Input Folder
 
@@ -62,14 +62,14 @@ Place all your .txt or .log files containing Arbor Peakflow detection logs insid
 2. Run the Script
 ```bash
 python DF-detection-log-parser.py
-
+```
 
 3. Output
 The script will create an output_csv folder if it doesn’t exist.
 It will generate a CSV file named:
 ```Shell
 attack_events_YYYYMMDD_HHMMSS.csv
-
+```
 
 ## 🔍 Notes
 
