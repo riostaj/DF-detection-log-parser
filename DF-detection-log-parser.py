@@ -55,7 +55,9 @@ if os.path.exists(input_file):
             if current_event:
                 add_match = additional_pattern.search(line)
                 if add_match:
-                    current_event["Start Time (UTC)"] = add_match.group("start")
+                    # Update Start Time only if empty
+                    if not current_event["Start Time (UTC)"]:
+                        current_event["Start Time (UTC)"] = add_match.group("start")
                     current_event["Duration (sec)"] = add_match.group("duration")
                     if add_match.group("stop"):
                         current_event["Stop Time (UTC)"] = add_match.group("stop")
