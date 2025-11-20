@@ -1,5 +1,13 @@
-
 # Log Parser for Arbor Peakflow Detection Events
+**Version:** 1.2.0  
+**Last Updated:** 2025-11-20  
+
+## Release Notes
+- Added input/output folder support.
+- Auto-create folders if missing.
+- Timestamped CSV output.
+- Fixed Stop Time capture logic.
+
 
 ## Overview
 This Python script parses raw detection event logs from Arbor Peakflow (or similar DDoS detection systems) and extracts key fields into a structured CSV file. It creates input and output folders automatically and saves the parsed data with a timestamped filename.
