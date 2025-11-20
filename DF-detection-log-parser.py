@@ -5,15 +5,15 @@ from datetime import datetime
 
 # Define input and output folders
 input_folder = "input_logs"
-output_folder = "output_csv"
+output_folder = "output_reports"
 
 # Create folders if they don't exist
 os.makedirs(input_folder, exist_ok=True)
 os.makedirs(output_folder, exist_ok=True)
 
-# Regex patterns
-start_stop_pattern = re.compile(r"start ([\d\-: ]+) UTC, duration (\d+), stop ([\d\-: ]+) UTC")
-event_pattern = re.compile(r"network ([\d\.]+)/32 protocol (\w+) external ID (\d+) bandwidth (\d+)\(bps\).*?Protected object ([A-Z\-0-9]+)")
+# Regex patterns (more flexible)
+start_stop_pattern = re.compile(r"start ([0-9\-: ]+) UTC, duration (\d+), stop ([0-9\-: ]+) UTC")
+event_pattern = re.compile(r"network ([0-9\.]+)/32 protocol (\w+) external ID (\d+) bandwidth (\d+)\(bps\).*?Protected object ([A-Z\-0-9]+)")
 
 # Initialize list for parsed data
 parsed_data = []
@@ -22,18 +22,22 @@ parsed_data = []
 for filename in os.listdir(input_folder):
     if filename.endswith(".txt") or filename.endswith(".log"):
         file_path = os.path.join(input_folder, filename)
+        print(f"Processing file: {file_path}")
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
 
         # Split into blocks and parse
         for block in content.split("Additional:"):
             m = start_stop_pattern.search(block)
-            if m:
+            event_match = event_pattern.search(block)
+            if m and event_match:
                 start, duration, stop = m.groups()
-                event_match = event_pattern.search(content)  # Use full content for event info
-                if event_match:
-                    ip, protocol, ext_id, bandwidth, obj = event_match.groups()
-                    parsed_data.append([start, stop, duration, ip, ext_id, obj, protocol, bandwidth])
+                ip, protocol, ext_id, bandwidth, obj = event_match.groups()
+                parsed_data.append([start, stop, duration, ip, ext_id, obj, protocol, bandwidth])
+            else:
+                # Debug: show unmatched blocks
+                if "start" in block or "network" in block:
+                    print(f"Skipped block (pattern mismatch): {block[:200]}...")
 
 # Create DataFrame
 df = pd.DataFrame(parsed_data, columns=[
@@ -48,4 +52,4 @@ output_file = os.path.join(output_folder, f"attack_events_{timestamp}.csv")
 # Save to CSV
 df.to_csv(output_file, index=False)
 
-print(f"Parsing complete. CSV saved to: {output_file}")
+print(f"Parsing complete. {len(parsed_data)} records saved to: {output_file}")
