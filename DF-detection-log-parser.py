@@ -88,3 +88,4 @@ if os.path.exists(input_file):
 
     print(f"Parsing complete! Data saved to {output_file}")
 else:
+    print(f"Input file not found: {input_file}")
