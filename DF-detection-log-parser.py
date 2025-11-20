@@ -12,7 +12,7 @@ os.makedirs(input_folder, exist_ok=True)
 os.makedirs(output_folder, exist_ok=True)
 
 # Input file path
-input_file = os.path.join(input_folder, "logs.txt")
+input_file = os.path.join(input_folder, "detection.log")
 
 # Output file path with timestamp
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
